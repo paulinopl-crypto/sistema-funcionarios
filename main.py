@@ -1,9 +1,3 @@
-# ==========================================
-#   Sistema de Estoque - Mini ERP
-#   Autor: (coloque seu nome)
-#   Linguagem: Python
-# ==========================================
-
 produtos = []
 
 
