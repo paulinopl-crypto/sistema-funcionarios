@@ -1,64 +1,90 @@
+# ==========================================
+#   Sistema de Estoque - Mini ERP
+#   Autor: (coloque seu nome)
+#   Linguagem: Python
+# ==========================================
 
-funcionarios = []
-
-def adicionar_funcionario(nome, salario):
-    funcionarios.append({"nome": nome, "salario": salario})
-    print(f"Funcionário {nome} adicionado com sucesso!")
-
-def listar_funcionarios():
-    if not funcionarios:
-        print("Nenhum funcionário cadastrado.")
-    else:
-        print("\n--- Lista de Funcionários ---")
-        for f in funcionarios:
-            print(f"Nome: {f['nome']} | Salário: R$ {f['salario']:.2f}")
-
-def buscar_funcionario(nome):
-    encontrados = [f for f in funcionarios if f['nome'].lower() == nome.lower()]
-    if encontrados:
-        print("\n--- Funcionário encontrado ---")
-        for f in encontrados:
-            print(f"Nome: {f['nome']} | Salário: R$ {f['salario']:.2f}")
-    else:
-        print(f"Nenhum funcionário encontrado com o nome '{nome}'.")
-
-def calcular_media_salarial():
-    if not funcionarios:
-        print("Não há funcionários para calcular a média salarial.")
-    else:
-        media = sum(f['salario'] for f in funcionarios) / len(funcionarios)
-        print(f"\nMédia salarial: R$ {media:.2f}")
+produtos = []
 
 
-# Programa Principal
-while True:
-    print("\n=== MENU ===")
-    print("1 - Adicionar funcionário")
-    print("2 - Listar funcionários")
-    print("3 - Buscar funcionário por nome")
-    print("4 - Calcular média salarial")
-    print("5 - Sair")
+def cadastrar_produto():
+    print("\n--- Cadastro de Produto ---")
 
-    opcao = input("Escolha uma opção: ")
+    nome = input("Nome do produto: ")
+    categoria = input("Categoria: ")
 
-    if opcao == "1":
-        nome = input("Nome do funcionário: ")
-        salario = float(input("Salário: R$ "))
-        adicionar_funcionario(nome, salario)
+    try:
+        preço = float(input("Preço (R$): "))
+        quantidade = int(input("Quantidade inicial: "))
+    except ValueError:
+        print("Erro: preço e quantidade devem ser valores numéricos.")
+        return
 
-    elif opcao == "2":
-        listar_funcionarios()
+    produto = {
+        "nome": nome,
+        "categoria": categoria,
+        "preço": preço,
+        "quantidade": quantidade
+    }
 
-    elif opcao == "3":
-        nome = input("Digite o nome para busca: ")
-        buscar_funcionario(nome)
+    produtos.append(produto)
+    print(f"\nProduto '{nome}' cadastrado com sucesso!\n")
 
-    elif opcao == "4":
-        calcular_media_salarial()
 
-    elif opcao == "5":
-        print("Encerrando o programa...")
-        break
+def excluir_produto():
+    print("\n--- Excluir Produto ---")
+    nome_remove = input("Digite o nome do produto a remover: ")
 
-    else:
-        print("Opção inválida, tente novamente.")
+    for produto in produtos:
+        if produto["nome"].lower() == nome_remove.lower():
+            produtos.remove(produto)
+            print(f"Produto '{nome_remove}' removido!\n")
+            return
+
+    print("Produto não encontrado.\n")
+
+
+def listar_produtos():
+    print("\n--- Lista de Produtos Cadastrados ---")
+
+    if len(produtos) == 0:
+        print("Nenhum produto cadastrado.\n")
+        return
+
+    for i, produto in enumerate(produtos, start=1):
+        print(f"\nID: {i}")
+        print(f"Nome: {produto['nome']}")
+        print(f"Categoria: {produto['categoria']}")
+        print(f"Preço: R${produto['preço']:.2f}")
+        print(f"Quantidade: {produto['quantidade']}")
+
+        if produto["quantidade"] < 5:
+            print("⚠️ Estoque baixo!")
+
+    print()
+
+
+def menu():
+    while True:
+        print("====== Sistema de Estoque - Mini ERP ======")
+        print("1 - Cadastrar produto")
+        print("2 - Excluir produto")
+        print("3 - Mostrar relatório de produtos")
+        print("4 - Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            cadastrar_produto()
+        elif opcao == "2":
+            excluir_produto()
+        elif opcao == "3":
+            listar_produtos()
+        elif opcao == "4":
+            print("Encerrando o sistema...")
+            break
+        else:
+            print("Opção inválida! Tente novamente.\n")
+
+
+menu()
